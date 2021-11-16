@@ -1,0 +1,697 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View;
+
+import Controller.*;
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JScrollPane;
+import model.DataLayer;
+import model.Group1;
+import model.User;
+
+/**
+ *
+ * @author Mohamad
+ */
+public class ClientGui extends javax.swing.JFrame {
+
+    /**
+     * Creates new form ClientGui
+     */
+    public IServer serverRef;
+    public ClientImp client;
+    public GroupImp groupimp;
+    public User user;
+    public int currentchatuser;
+    public boolean current_user_or_group;
+    
+    public ClientGui() {
+        initComponents();
+        DataLayer dl=new DataLayer();
+        user=new User();
+        user.GetUserDataByID(dl);
+        try {
+            client = new ClientImp(this);
+            groupimp =new GroupImp(this);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (serverRef == null) {
+            try {
+                serverRef = (IServer) Naming.lookup("rmi://127.0.0.1:2000/serv");
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        try {
+            serverRef.reconnect(user,client);
+            PUsersChat1.setVisible(false);
+            LInfo.setVisible(false);
+            LRemove.setVisible(false);
+            LAdd.setVisible(false);
+            LUsername.setText(user.getUsername());
+            String img=user.getImage();
+            String search = ".png";
+            int index = img.lastIndexOf(search);
+            img = img.substring(0, index);
+            img=img+"-small.png";
+            LCurrentImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/"+img)));
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+        try {
+            // call terminate
+            serverRef.disconnect(user);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+});
+    }
+
+    public ClientGui(User u) {
+        initComponents();
+        user=u;
+        
+        try {
+            client = new ClientImp(this);
+            groupimp =new GroupImp(this);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (serverRef == null) {
+            try {
+                serverRef = (IServer) Naming.lookup("rmi://127.0.0.1:2000/serv");
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        try {
+            serverRef.reconnect(user,client);
+            PUsersChat1.setVisible(false);
+            LUsername.setText(user.getUsername());
+            String img=user.getImage();
+            String search = ".png";
+            int index = img.lastIndexOf(search);
+            img = img.substring(0, index);
+            img=img+"-small.png";
+            LCurrentImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/"+img)));
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+        try {
+            // call terminate
+            serverRef.disconnect(user);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+});
+    }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        PUser3 = new javax.swing.JPanel();
+        LTimeUser3 = new javax.swing.JLabel();
+        LMessageUser3 = new javax.swing.JLabel();
+        LUsername3 = new javax.swing.JLabel();
+        LImageUser3 = new javax.swing.JLabel();
+        PUser2 = new javax.swing.JPanel();
+        LTimeUser2 = new javax.swing.JLabel();
+        LMessageUser2 = new javax.swing.JLabel();
+        LUsername2 = new javax.swing.JLabel();
+        LImageUser2 = new javax.swing.JLabel();
+        PUser1 = new javax.swing.JPanel();
+        LTimeUser1 = new javax.swing.JLabel();
+        LMessageUser1 = new javax.swing.JLabel();
+        LUsername1 = new javax.swing.JLabel();
+        LImageUser1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        Bcondiscon = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        BSend = new javax.swing.JButton();
+        TextMessage = new javax.swing.JTextField();
+        PUsersChat1 = new javax.swing.JPanel();
+        LInfo = new javax.swing.JLabel();
+        LCurrentChatUsername = new javax.swing.JLabel();
+        LCurrentChatImageUser = new javax.swing.JLabel();
+        Llastseen = new javax.swing.JLabel();
+        LRemove = new javax.swing.JLabel();
+        LAdd = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        PUsersChat2 = new javax.swing.JPanel();
+        LUsername = new javax.swing.JLabel();
+        BListOnline = new javax.swing.JButton();
+        LCurrentImageUser = new javax.swing.JLabel();
+        BCreateGroup = new javax.swing.JButton();
+        BBroadcast = new javax.swing.JButton();
+        PUsersChat = new javax.swing.JPanel();
+        LSearch1 = new javax.swing.JLabel();
+        LAddUserChat = new javax.swing.JLabel();
+        TextSearchUser = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(0, 51, 51));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        jPanel1.setAutoscrolls(true);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        PUser3.setBackground(new java.awt.Color(0, 51, 51));
+        PUser3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        PUser3.setPreferredSize(new java.awt.Dimension(500, 92));
+        PUser3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        LTimeUser3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LTimeUser3.setForeground(new java.awt.Color(255, 255, 255));
+        LTimeUser3.setText("Time");
+        PUser3.add(LTimeUser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 50, -1));
+
+        LMessageUser3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        LMessageUser3.setForeground(new java.awt.Color(255, 255, 255));
+        LMessageUser3.setText("Message");
+        PUser3.add(LMessageUser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 45, 381, 47));
+
+        LUsername3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        LUsername3.setForeground(new java.awt.Color(255, 255, 255));
+        LUsername3.setText("username");
+        PUser3.add(LUsername3, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 14, 230, 24));
+
+        LImageUser3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LImageUser3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/avatar1-small.png"))); // NOI18N
+        LImageUser3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 40, 40), 5, true));
+        PUser3.add(LImageUser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 22, -1, -1));
+
+        jPanel1.add(PUser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 510, 100));
+
+        PUser2.setBackground(new java.awt.Color(0, 51, 51));
+        PUser2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        PUser2.setPreferredSize(new java.awt.Dimension(500, 92));
+        PUser2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        LTimeUser2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LTimeUser2.setForeground(new java.awt.Color(255, 255, 255));
+        LTimeUser2.setText("Time");
+        PUser2.add(LTimeUser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 40, -1));
+
+        LMessageUser2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        LMessageUser2.setForeground(new java.awt.Color(255, 255, 255));
+        LMessageUser2.setText("Message");
+        PUser2.add(LMessageUser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 45, 381, 47));
+
+        LUsername2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        LUsername2.setForeground(new java.awt.Color(255, 255, 255));
+        LUsername2.setText("username");
+        PUser2.add(LUsername2, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 14, 230, 24));
+
+        LImageUser2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LImageUser2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/avatar1-small.png"))); // NOI18N
+        LImageUser2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 40, 40), 5, true));
+        PUser2.add(LImageUser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 14, -1, -1));
+
+        jPanel1.add(PUser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 510, 100));
+
+        PUser1.setBackground(new java.awt.Color(0, 51, 51));
+        PUser1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
+        PUser1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PUser1MouseClicked(evt);
+            }
+        });
+        PUser1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        LTimeUser1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LTimeUser1.setForeground(new java.awt.Color(255, 255, 255));
+        LTimeUser1.setText("Time");
+        PUser1.add(LTimeUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 60, -1));
+
+        LMessageUser1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        LMessageUser1.setForeground(new java.awt.Color(255, 255, 255));
+        LMessageUser1.setText("Message");
+        PUser1.add(LMessageUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 45, 381, 47));
+
+        LUsername1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        LUsername1.setForeground(new java.awt.Color(255, 255, 255));
+        LUsername1.setText("username");
+        PUser1.add(LUsername1, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 14, 220, 24));
+
+        LImageUser1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LImageUser1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/avatar1-small.png"))); // NOI18N
+        LImageUser1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 40, 40), 5, true));
+        PUser1.add(LImageUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 14, -1, -1));
+
+        jPanel1.add(PUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 100));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 510, 700));
+
+        jPanel3.setBackground(new java.awt.Color(77, 155, 103));
+        jPanel3.setLayout(null);
+
+        Bcondiscon.setBackground(new java.awt.Color(20, 40, 40));
+        Bcondiscon.setForeground(new java.awt.Color(255, 255, 255));
+        Bcondiscon.setText("Disconnect");
+        Bcondiscon.setIconTextGap(0);
+        Bcondiscon.setOpaque(false);
+        Bcondiscon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BcondisconActionPerformed(evt);
+            }
+        });
+        jPanel3.add(Bcondiscon);
+        Bcondiscon.setBounds(440, 10, 140, 30);
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 50));
+
+        jPanel4.setBackground(new java.awt.Color(20, 40, 40));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102), 2));
+        jPanel4.setLayout(null);
+
+        BSend.setBackground(new java.awt.Color(20, 40, 40));
+        BSend.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        BSend.setForeground(new java.awt.Color(255, 255, 255));
+        BSend.setText("Send");
+        BSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BSendActionPerformed(evt);
+            }
+        });
+        jPanel4.add(BSend);
+        BSend.setBounds(390, 850, 100, 50);
+
+        TextMessage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        TextMessage.setForeground(new java.awt.Color(20, 40, 40));
+        TextMessage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextMessageActionPerformed(evt);
+            }
+        });
+        jPanel4.add(TextMessage);
+        TextMessage.setBounds(0, 850, 390, 50);
+
+        PUsersChat1.setBackground(new java.awt.Color(20, 40, 40));
+        PUsersChat1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        PUsersChat1.setLayout(null);
+
+        LInfo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Resources/icons8-info-64 (1).png"))); // NOI18N
+        LInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LInfoMouseClicked(evt);
+            }
+        });
+        PUsersChat1.add(LInfo);
+        LInfo.setBounds(430, 30, 48, 50);
+
+        LCurrentChatUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        LCurrentChatUsername.setForeground(new java.awt.Color(255, 255, 255));
+        PUsersChat1.add(LCurrentChatUsername);
+        LCurrentChatUsername.setBounds(100, 20, 220, 40);
+
+        LCurrentChatImageUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LCurrentChatImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/none-small.png"))); // NOI18N
+        LCurrentChatImageUser.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 40, 40), 5, true));
+        PUsersChat1.add(LCurrentChatImageUser);
+        LCurrentChatImageUser.setBounds(20, 10, 70, 70);
+
+        Llastseen.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        Llastseen.setForeground(new java.awt.Color(255, 255, 255));
+        PUsersChat1.add(Llastseen);
+        Llastseen.setBounds(110, 60, 160, 20);
+
+        LRemove.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Resources/icons8-delete-bin-64 (2).png"))); // NOI18N
+        LRemove.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LRemoveMouseClicked(evt);
+            }
+        });
+        PUsersChat1.add(LRemove);
+        LRemove.setBounds(380, 30, 40, 50);
+
+        LAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Resources/icons8-plus-64 (1).png"))); // NOI18N
+        LAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LAddMouseClicked(evt);
+            }
+        });
+        PUsersChat1.add(LAdd);
+        LAdd.setBounds(330, 30, 40, 50);
+
+        jPanel4.add(PUsersChat1);
+        PUsersChat1.setBounds(0, 0, 490, 100);
+
+        jPanel9.setBackground(new java.awt.Color(20, 40, 40));
+        jPanel9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        jPanel9.setLayout(null);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Resources/logo3.png"))); // NOI18N
+        jPanel9.add(jLabel1);
+        jLabel1.setBounds(70, 330, 380, 154);
+
+        jPanel4.add(jPanel9);
+        jPanel9.setBounds(0, 100, 490, 750);
+
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 50, 490, 900));
+
+        PUsersChat2.setBackground(new java.awt.Color(20, 40, 40));
+        PUsersChat2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        PUsersChat2.setLayout(null);
+
+        LUsername.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        LUsername.setForeground(new java.awt.Color(255, 255, 255));
+        LUsername.setText("User or group or broadcast");
+        PUsersChat2.add(LUsername);
+        LUsername.setBounds(90, 40, 210, 30);
+
+        BListOnline.setBackground(new java.awt.Color(0, 51, 51));
+        BListOnline.setForeground(new java.awt.Color(255, 255, 255));
+        BListOnline.setText("List online users");
+        BListOnline.setBorderPainted(false);
+        BListOnline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BListOnlineActionPerformed(evt);
+            }
+        });
+        PUsersChat2.add(BListOnline);
+        BListOnline.setBounds(360, 0, 150, 30);
+
+        LCurrentImageUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LCurrentImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Profile/small/avatar1-small.png"))); // NOI18N
+        LCurrentImageUser.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(20, 40, 40), 5, true));
+        PUsersChat2.add(LCurrentImageUser);
+        LCurrentImageUser.setBounds(10, 10, 70, 70);
+
+        BCreateGroup.setBackground(new java.awt.Color(0, 51, 51));
+        BCreateGroup.setForeground(new java.awt.Color(255, 255, 255));
+        BCreateGroup.setText("Create group");
+        BCreateGroup.setBorderPainted(false);
+        BCreateGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BCreateGroupActionPerformed(evt);
+            }
+        });
+        PUsersChat2.add(BCreateGroup);
+        BCreateGroup.setBounds(360, 40, 150, 25);
+
+        BBroadcast.setBackground(new java.awt.Color(0, 51, 51));
+        BBroadcast.setForeground(new java.awt.Color(255, 255, 255));
+        BBroadcast.setText("Broadcast");
+        BBroadcast.setBorderPainted(false);
+        BBroadcast.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BBroadcastMouseClicked(evt);
+            }
+        });
+        BBroadcast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BBroadcastActionPerformed(evt);
+            }
+        });
+        PUsersChat2.add(BBroadcast);
+        BBroadcast.setBounds(360, 75, 150, 25);
+
+        getContentPane().add(PUsersChat2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 510, 100));
+
+        PUsersChat.setBackground(new java.awt.Color(20, 40, 40));
+        PUsersChat.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        PUsersChat.setLayout(null);
+
+        LSearch1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LSearch1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Resources/icons8-search-48.png"))); // NOI18N
+        LSearch1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LSearch1MouseClicked(evt);
+            }
+        });
+        PUsersChat.add(LSearch1);
+        LSearch1.setBounds(360, 20, 50, 60);
+
+        LAddUserChat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LAddUserChat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Resources/icons8-plus-64.png"))); // NOI18N
+        LAddUserChat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LAddUserChatMouseClicked(evt);
+            }
+        });
+        PUsersChat.add(LAddUserChat);
+        LAddUserChat.setBounds(430, 20, 60, 60);
+
+        TextSearchUser.setBackground(new java.awt.Color(20, 40, 40));
+        TextSearchUser.setFont(new java.awt.Font("Gabriola", 0, 24)); // NOI18N
+        TextSearchUser.setForeground(new java.awt.Color(255, 255, 255));
+        TextSearchUser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
+        TextSearchUser.setOpaque(false);
+        PUsersChat.add(TextSearchUser);
+        TextSearchUser.setBounds(20, 40, 320, 40);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Search");
+        PUsersChat.add(jLabel3);
+        jLabel3.setBounds(20, 0, 90, 30);
+
+        getContentPane().add(PUsersChat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 510, 100));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void BcondisconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BcondisconActionPerformed
+        if (Bcondiscon.getText().equals("Disconnect")){      
+        try {
+            // make user offline and update last seen
+            serverRef.disconnect(user);
+            Bcondiscon.setText("Connect");
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        else{
+            try {
+                //connnect
+                serverRef.reconnect(user,client);
+                Bcondiscon.setText("Disconnect");
+            } catch (RemoteException ex) {
+                Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_BcondisconActionPerformed
+
+    private void BSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSendActionPerformed
+        try {
+            serverRef.send(TextMessage.getText(), user.getId(),currentchatuser,current_user_or_group);
+            TextMessage.setText("");
+            }
+        catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BSendActionPerformed
+
+    private void BListOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BListOnlineActionPerformed
+        // List Users
+        try {
+            List l=new List(serverRef.listConnected());
+            l.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BListOnlineActionPerformed
+
+    private void PUser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PUser1MouseClicked
+   
+    }//GEN-LAST:event_PUser1MouseClicked
+
+    private void TextMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextMessageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextMessageActionPerformed
+
+    private void LInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LInfoMouseClicked
+        // TODO add your handling code here:
+        // List Users if group and list groups if user
+        if(current_user_or_group==true){
+        try {
+            List l=new List(groupimp.GetAllGroupUsers(currentchatuser));
+            l.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }//GEN-LAST:event_LInfoMouseClicked
+
+    private void BCreateGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCreateGroupActionPerformed
+        // TODO add your handling code here:
+       CreateGroup newGroup= new CreateGroup(serverRef,user.getId(),client);
+       newGroup.setVisible(true);
+    }//GEN-LAST:event_BCreateGroupActionPerformed
+
+    private void LSearch1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LSearch1MouseClicked
+        try {
+            // TODO add your handling code here:
+            serverRef.SearchUserGroup(user, TextSearchUser.getText(),client);;
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_LSearch1MouseClicked
+
+    private void LAddUserChatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LAddUserChatMouseClicked
+        try {
+            serverRef.addNewChat(user.getId(), TextSearchUser.getText());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_LAddUserChatMouseClicked
+
+    private void LRemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LRemoveMouseClicked
+        try {
+            // TODO add your handling code here:
+            ArrayList<User> users=groupimp.GetAllGroupUsers(currentchatuser);
+            Remove_from_group remove_from_group=new Remove_from_group(groupimp,currentchatuser,users);
+            remove_from_group.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_LRemoveMouseClicked
+
+    private void LAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LAddMouseClicked
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ArrayList<User> users=serverRef.getAllUsers();
+            Add_to_group add_to_group=new Add_to_group(groupimp,currentchatuser,users);
+            add_to_group.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_LAddMouseClicked
+
+    private void BBroadcastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBroadcastActionPerformed
+        try {
+            // TODO add your handling code here:
+            // TODO add your handling code here:
+            ArrayList<User> users=serverRef.GetAllUsersChattedWith(user.getId());
+            Broadcast broadcast=new Broadcast(serverRef,user.getId(),users);
+            broadcast.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_BBroadcastActionPerformed
+
+    private void BBroadcastMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BBroadcastMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_BBroadcastMouseClicked
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ClientGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ClientGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ClientGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ClientGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ClientGui().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BBroadcast;
+    private javax.swing.JButton BCreateGroup;
+    private javax.swing.JButton BListOnline;
+    private javax.swing.JButton BSend;
+    private javax.swing.JButton Bcondiscon;
+    public javax.swing.JLabel LAdd;
+    private javax.swing.JLabel LAddUserChat;
+    public javax.swing.JLabel LCurrentChatImageUser;
+    public javax.swing.JLabel LCurrentChatUsername;
+    public javax.swing.JLabel LCurrentImageUser;
+    private javax.swing.JLabel LImageUser1;
+    private javax.swing.JLabel LImageUser2;
+    private javax.swing.JLabel LImageUser3;
+    public javax.swing.JLabel LInfo;
+    private javax.swing.JLabel LMessageUser1;
+    private javax.swing.JLabel LMessageUser2;
+    private javax.swing.JLabel LMessageUser3;
+    public javax.swing.JLabel LRemove;
+    private javax.swing.JLabel LSearch1;
+    private javax.swing.JLabel LTimeUser1;
+    private javax.swing.JLabel LTimeUser2;
+    private javax.swing.JLabel LTimeUser3;
+    public javax.swing.JLabel LUsername;
+    private javax.swing.JLabel LUsername1;
+    private javax.swing.JLabel LUsername2;
+    private javax.swing.JLabel LUsername3;
+    public javax.swing.JLabel Llastseen;
+    private javax.swing.JPanel PUser1;
+    private javax.swing.JPanel PUser2;
+    private javax.swing.JPanel PUser3;
+    private javax.swing.JPanel PUsersChat;
+    public javax.swing.JPanel PUsersChat1;
+    private javax.swing.JPanel PUsersChat2;
+    private javax.swing.JTextField TextMessage;
+    private javax.swing.JTextField TextSearchUser;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    public javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    public javax.swing.JPanel jPanel4;
+    public javax.swing.JPanel jPanel9;
+    // End of variables declaration//GEN-END:variables
+}
